@@ -1,4 +1,4 @@
-# Action
+# OpenAI Image Generation Action
 
 This action generates an image using the [OpenAI Image Generation API](https://platform.openai.com/docs/guides/images/image-generation-beta).
 
@@ -48,7 +48,9 @@ Various inputs are defined in [`action.yml`](action.yml):
 
 | Name | Description | Default |
 | --- | - | - |
-| github&#x2011;token | Token to use to authorize. | ${{&nbsp;github.token&nbsp;}} |
+| openai&#x2011;api&#x2011;key | OpenAI API key. | |
+| prompt | Prompt to use for image generation. | |
+| size | Size of the image to generate. | 512x512 |
 
 <!-- 
 ## ⬅️ Outputs
