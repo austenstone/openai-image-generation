@@ -10932,9 +10932,9 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         n: input.n,
         size: input.size,
     });
-    console.log(response.data);
+    console.log(response.data[0].url);
     core.setOutput('created', response.created);
-    core.setOutput('image', response.data);
+    core.setOutput('image', response.data.find(i => i).url);
 });
 run();
 
