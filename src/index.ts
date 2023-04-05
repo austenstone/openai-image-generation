@@ -1,35 +1,38 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
+const { Configuration, OpenAIApi } = require("openai");
 
 interface Input {
   token: string;
+  openaiApiKey: string;
+  prompt: string;
+  size: string;
+  n: number;
 }
 
 export function getInputs(): Input {
   const result = {} as Input;
   result.token = core.getInput('github-token');
+  result.openaiApiKey = core.getInput('openai-api-key');
+  result.prompt = core.getInput('prompt');
+  result.size = core.getInput('size') || "1024x1024";
+  result.n = 1;
   return result;
 }
 
 const run = async (): Promise<void> => {
-  try {
-    const input = getInputs();
-    const octokit: ReturnType<typeof github.getOctokit> = github.getOctokit(input.token);
+  const input = getInputs();
 
-    const {
-      viewer: { login },
-    }: any = await octokit.graphql(`{ 
-      viewer { 
-        login
-      }
-    }`);
+  const configuration = new Configuration({ apiKey: input.openaiApiKey });
+  const openai = new OpenAIApi(configuration);
+    
+  const response = await openai.createImage({
+    prompt: input.prompt,
+    n: input.n,
+    size: input.size,
+  });
 
-    core.info(`Hello, ${login}!`);
-  } catch (error) {
-    core.startGroup(error instanceof Error ? error.message : JSON.stringify(error));
-    core.info(JSON.stringify(error, null, 2));
-    core.endGroup();
-  }
+  core.setOutput('created', response.created);
+  core.setOutput('image', response.data.find(i => i));
 };
 
 run();
