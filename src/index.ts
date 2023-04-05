@@ -29,9 +29,9 @@ const run = async (): Promise<void> => {
     size: input.size,
   });
 
-  console.log(response.data[0].url)
+  console.log(response.data)
   core.setOutput('created', response.created);
-  core.setOutput('image', response.data.find(i => i).url);
+  // core.setOutput('image', response.data.find(i => i).url);
 };
 
 run();
