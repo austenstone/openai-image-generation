@@ -1,7 +1,7 @@
 {
-  "name": "action-typescript",
+  "name": "openai-image-generation",
   "version": "1.0.0",
-  "description": "GitHub Actions TypeScript template",
+  "description": "Generate images using OpenAI's API",
   "main": "src/index.ts",
   "scripts": {
     "build": "ncc build",
