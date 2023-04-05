@@ -2,7 +2,6 @@ import * as core from '@actions/core';
 const { Configuration, OpenAIApi } = require("openai");
 
 interface Input {
-  token: string;
   openaiApiKey: string;
   prompt: string;
   size: string;
@@ -11,7 +10,6 @@ interface Input {
 
 export function getInputs(): Input {
   const result = {} as Input;
-  result.token = core.getInput('github-token');
   result.openaiApiKey = core.getInput('openai-api-key');
   result.prompt = core.getInput('prompt');
   result.size = core.getInput('size') || "1024x1024";
