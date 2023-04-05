@@ -1,8 +1,7 @@
 name: Usage
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
+  issue_comment:
+    types: [created]
 
 jobs:
   run:
@@ -14,3 +13,4 @@ jobs:
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           prompt: "A cute baby sea otter"
+      - run: gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments -f body="![image](${{ steps.run.outputs.image }})"
