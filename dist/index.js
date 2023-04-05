@@ -10932,6 +10932,7 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         n: input.n,
         size: input.size,
     });
+    console.log(response);
     core.setOutput('created', response.created);
     core.setOutput('image', response.data.find(i => i));
 });
