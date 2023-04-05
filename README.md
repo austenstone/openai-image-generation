@@ -1,9 +1,9 @@
 # Action
 
-This repository serves as a [template](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for TypeScript [Actions](https://docs.github.com/en/actions).
+This action generates an image using the [OpenAI Image Generation API](https://platform.openai.com/docs/guides/images/image-generation-beta).
 
 ## Usage
-Create a workflow (eg: `.github/workflows/seat-count.yml`). See [Creating a Workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file).
+Create a workflow (eg: `.github/workflows/generate-image.yml`). See [Creating a Workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file).
 
 <!-- 
 ### PAT(Personal Access Token)
@@ -18,16 +18,29 @@ If your organization has SAML enabled you must authorize the PAT, see [Authorizi
 
 #### Example
 ```yml
-name: TypeScript Action Workflow
+name: Image Generation
 on:
-  workflow_dispatch:
+  issue_comment:
+    types: [created]
 
 jobs:
   run:
+    if: ${{ startsWith(github.event.comment.body, '/image') }}
     name: Run Action
     runs-on: ubuntu-latest
     steps:
-      - uses: austenstone/action-typescript@main
+      - id: prompt
+        uses: actions/github-script@v3
+        with:
+          script: return context.payload.comment.body.replace('/image', '').trim()
+      - id: generate-image
+        uses: austenstone/openai-image-generation@main
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: ${{ steps.prompt.outputs.result }}
+      - run: gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments -f body="![image](${{ steps.generate-image.outputs.image }})"
+        env:
+          GH_TOKEN: ${{ github.token }}
 ```
 
 ## ➡️ Inputs
