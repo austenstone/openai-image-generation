@@ -5,15 +5,20 @@ on:
 
 jobs:
   run:
+    if: ${{ startsWith(github.event.comment.body, '/image') }}
     name: Run Action
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - id: prompt
+        uses: actions/github-script@v3
+        with:
+          script: return context.payload.comment.body.replace('/image', '').trim()
       - id: generate-image
         uses: ./
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          prompt: "A cute baby sea otter"
+          prompt: ${{ steps.prompt.outputs.result }}
       - run: gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments -f body="![image](${{ steps.generate-image.outputs.image }})"
         env:
           GH_TOKEN: ${{ github.token }}
