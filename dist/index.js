@@ -10932,8 +10932,10 @@ const run = () => __awaiter(void 0, void 0, void 0, function* () {
         n: input.n,
         size: input.size,
     });
+    const imageUrl = response.data.data.find(i => i).url;
     core.setOutput('created', response.created);
-    core.setOutput('image', response.data.data.find(i => i).url);
+    core.setOutput('image', imageUrl);
+    core.notice(`Image generated: ${imageUrl}`);
 });
 run();
 

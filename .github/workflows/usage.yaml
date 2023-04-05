@@ -9,10 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./
+      - id: generate-image
+        uses: ./
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           prompt: "A cute baby sea otter"
-      - run: gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments -f body="![image](${{ steps.run.outputs.image }})"
+      - run: gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments -f body="![image](${{ steps.generate-image.outputs.image }})"
         env:
           GH_TOKEN: ${{ github.token }}
