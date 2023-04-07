@@ -1,6 +1,6 @@
 name: OpenAI Image Generation Action
 author: Austen Stone
-description: Generate images using OpenAI's API
+description: Generate images using the OpenAI API DALLE
 branding:
   icon: "image"
   color: "green"
