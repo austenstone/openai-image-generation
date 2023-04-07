@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: prompt
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: return context.payload.comment.body.replace('/image', '').trim()
       - id: generate-image
